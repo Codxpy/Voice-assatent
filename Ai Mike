@@ -1,0 +1,150 @@
+import os
+import speech_recognition as sr
+import pyttsx3
+import datetime as dt
+import pywhatkit as pk
+import wikipedia as wiki
+import pyjokes
+import webbrowser as web
+import speedtest
+import subprocess
+import playsound as ps
+import time
+import wolframalpha
+
+try:
+    app = wolframalpha.Client("Y8GKPR-R52G5AVEAQ")
+except Exception:
+    print("Not found result")
+
+listener = sr.Recognizer()
+
+speaker = pyttsx3.init()
+
+""" RATE"""
+rate = speaker.getProperty('rate')
+
+speaker.setProperty('rate', 120)
+
+voices = speaker.getProperty('voices')
+speaker.setProperty('voice', voices[0].id)
+
+
+def speak(text):
+
+    speaker.say('Yes Boss,' +text)
+    speaker.runAndWait()
+
+
+def speaks(text):
+    speaker.say(text)
+    speaker.runAndWait()
+
+va_name = 'Mike'
+
+speak('I am your Mike Tell me boss ')
+def take_command():
+    command = ''
+    try:
+        with sr.Microphone() as source:
+            print("Listening.....")
+            voice = listener.listen(source)
+            command = listener.recognize_google(voice)
+            command = command.lower()
+            if va_name in command:
+                command = command.replace(va_name + '', '')
+                print(command)
+                #speak(command)
+
+    except:
+        print('Check your Microphone')
+
+    return command
+
+while True:
+     user_command = take_command()
+
+     if 'close' in user_command:
+         print('See you again boss. I will be there when ever you call me.')
+         speaks('See you again boss. I will be there when ever you call me.')
+         break
+     elif 'time' in user_command:
+        cur_time = dt.datetime.now().strftime("%I:%M %p")
+        print(cur_time)
+        speak(cur_time)
+     elif 'play' in user_command:
+         user_command = user_command.replace('play ', '')
+         print('Playing ' + user_command)
+         speak('Playing ' + user_command + ', enjoy boss')
+         pk.playonyt(user_command)
+     elif 'google' in user_command:
+         user_command = user_command.replace('google ', '')
+         user_command = user_command.replace('mike', '')
+         speak('searching for' + user_command)
+         pk.search(user_command)
+     elif 'who is' in user_command:
+         user_command = user_command.replace('who is ', '')
+         info = wiki.summary(user_command, 1)
+         print(info)
+         speak(info)
+     elif 'joke' in user_command:
+         lol = (pyjokes.get_joke())
+         print(lol)
+         speak(lol)
+     elif 'how are you' in user_command:
+         speaks('Fine Boss. how are you')
+     elif 'youtube' in user_command:
+         web.open('https://www.youtube.com/')
+         speak('opened youtube boss')
+     elif 'insta' in user_command:
+         web.open('https://www.instagram.com/')
+         speaks("Enjoy Boss")
+     elif 'anything' in user_command:
+         speak('Thank you soo much Boss for giving me a new life in you System. I will do anything for you')
+     
+     elif 'notepad' in user_command:
+         subprocess.Popen('C:\\WINDOWS\\system32\\notepad.exe')
+         speaks('opened Notepad Boss')
+     elif 'see' in user_command or 'bye' in user_command:
+         print("Have a good day boss Bye")
+         speaks('Have a good day boss. bye')
+         break
+     elif 'how' in user_command or 'why' in user_command or 'define' in user_command or 'calculate' in user_command or 'temp' in user_command or 'what is' in user_command or 'which' in user_command:
+         try:
+             res = app.query(user_command)
+             lolll = (next(res.results).text)
+             print(lolll)
+             speak(lolll)
+         except:
+             print("Not found")
+     elif 'search for' in user_command:
+         user_command = user_command.replace('search for ','')
+         speaks("searching for" + user_command)
+         web.open('https://www.youtube.com/results?search_query='+user_command)
+     elif 'music' in user_command:
+         ps.playsound('C:\\Users\\Sathish\\Music\\zooo.wav')
+     elif 'song' in user_command:
+         ps.playsound('C:\\Users\\Sathish\\Music\\Eminem - Rap God.mp3')
+     elif 'what can' in user_command:
+         print('I can Tell you a joke'
+               '\nI can open youtube and insta'
+               '\nI can search anything on youtube for you'
+               '\nI can google anything to you'
+               '\nI can play any video on youtube'
+               '\nI can sing a song for you' 
+               '\nI can check you internet speed'
+               '\nI can give information about someone'
+               '\nI can do mathematical functions for you'
+               '\nI can answer your Science quastion'
+               '\nI can say the temperature in any city'
+               '\nI can say time and open notepad')
+         speaks('These are the things i can do for you')
+     elif 'movie' in user_command:
+         os.startfile('F:\\MY MOVIES\\INTERSTELLAR.mkv')
+     elif 'help' in user_command:
+         print('please tell me how may i help you')
+         speaks('please tell me how may i help you')
+
+
+
+
