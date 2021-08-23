@@ -1,0 +1,40 @@
+import wolframalpha    #pip install wolframalpha
+import wikipedia as wiki   #pip install wikipedia
+
+try:
+    app = wolframalpha.Client("VTGXH2-J4QHJHKV25")
+except Exception:
+    print("Not found result")
+
+print("How may i Help you")
+
+while True:
+    
+    inpu = input()
+    if 'define' in inpu or 'm' in inpu:
+            try:
+                res = app.query(inpu)
+                lolll = (next(res.results).text)
+                print(lolll)
+                print('next..')
+    
+            except:
+                print("Not found")
+                print('next..')
+    elif 'what' in inpu:
+        inpu = inpu.replace('what', '')
+        info = wiki.summary(inpu,1)
+        print(info)
+        print('next..')
+    elif  'bye' in inpu:
+        break
+    else:
+        try:
+                res = app.query(inpu)
+                lolll = (next(res.results).text)
+                print(lolll)
+                print('next..')
+    
+        except:
+                print("Not found")
+                print('next..')
